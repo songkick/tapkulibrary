@@ -51,8 +51,8 @@
 @property (nonatomic,assign) id <TKCalendarMonthViewDelegate> delegate;
 @property (nonatomic,assign) id <TKCalendarMonthViewDataSource> dataSource;
 
-- (id) initWithSundayAsFirst:(BOOL)sunday; // or Monday
-
+- (id)initWithFrame:(CGRect)frame sundayAsFirst:(BOOL)yesOrNo;
+- (id)initWithSundayAsFirst:(BOOL)sunday; // or Monday
 
 - (NSDate*) dateSelected;
 - (NSDate*) monthDate;

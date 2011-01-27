@@ -616,19 +616,10 @@
 {
 	sunday = s;
 	
+	NSDate *firstOfMonth = [[NSDate date] firstOfMonth];
 	
-	
-	currentTile = [[[TKCalendarMonthTiles alloc] initWithMonth:[[NSDate date] firstOfMonth] marks:nil startDayOnSunday:sunday] autorelease];
+	currentTile = [[TKCalendarMonthTiles alloc] initWithMonth:firstOfMonth marks:nil startDayOnSunday:sunday];
 	[currentTile setTarget:self action:@selector(tile:)];
-	
-	[currentTile setTarget:self action:@selector(tile:)];
-	CGRect r = CGRectMake(0, 0, self.tileBox.bounds.size.width, self.tileBox.bounds.size.height + self.tileBox.frame.origin.y);
-	
-	
-	self.frame = r;
-	
-	
-	[currentTile retain];
 	
 	[self addSubview:self.topBackground];
 	[self.tileBox addSubview:currentTile];
@@ -637,7 +628,6 @@
 	NSDate *date = [NSDate date];
 	self.monthYear.text = [NSString stringWithFormat:@"%@ %@",[date month],[date year]];
 	[self addSubview:self.monthYear];
-	
 	
 	[self addSubview:self.leftArrow];
 	[self addSubview:self.rightArrow];
@@ -685,11 +675,9 @@
 	
 	[dateFormat release];
 	
-	
-	
 	NSArray *ar;
-	if(sunday) ar = [NSArray arrayWithObjects:sun,mon,tue,wed,thu,fri,sat,nil];
-	else ar = [NSArray arrayWithObjects:mon,tue,wed,thu,fri,sat,sun,nil];
+	if(sunday) ar = [NSArray arrayWithObjects:sun, mon, tue, wed, thu, fri, sat, nil];
+	else ar = [NSArray arrayWithObjects:mon, tue, wed, thu, fri, sat, sun, nil];
 	
 	int i = 0;
 	for(NSString *s in ar){
@@ -709,8 +697,36 @@
 	}
 }
 
-- (id) init{
-	return [self initWithSundayAsFirst:YES];
+- (id)init
+{
+	return [self initWithSundayAsFirst:NO];
+}
+
+- (id)initWithSundayAsFirst:(BOOL)yesOrNo
+{	
+	if (self = [super init])
+	{
+		[self __initializeComponentWithSundayAsFirst:yesOrNo];
+	}
+	
+	return self;
+}
+
+/* AN [27 Jan 2011]: Added */
+- (id)initWithFrame:(CGRect)frame
+{
+	return [self initWithFrame:frame sundayAsFirst:NO];
+}
+
+/* AN [27 Jan 2011]: Added */
+- (id)initWithFrame:(CGRect)frame sundayAsFirst:(BOOL)yesOrNo
+{
+	if (self = [super initWithFrame:frame])
+	{
+		[self __initializeComponentWithSundayAsFirst:yesOrNo];
+	}
+	
+	return self;
 }
 
 /* AN [26 Jan 2011]: Added */
@@ -724,15 +740,8 @@
 	return self;
 }
 
-- (id) initWithSundayAsFirst:(BOOL)s{
-	
-	if (!(self = [super initWithFrame:CGRectZero])) return nil;
-	
-	[self __initializeComponentWithSundayAsFirst:s];
-	
-	return self;
-}
-- (void) dealloc {
+- (void) dealloc
+{
 	[shadow release];
 	[topBackground release];
 	[leftArrow release];
@@ -740,6 +749,7 @@
 	[rightArrow release];
 	[tileBox release];
 	[currentTile release];
+	
     [super dealloc];
 }
 
