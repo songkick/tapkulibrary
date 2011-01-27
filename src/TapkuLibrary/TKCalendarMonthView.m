@@ -612,14 +612,8 @@
 @implementation TKCalendarMonthView
 @synthesize delegate,dataSource;
 
-
-- (id) init{
-	return [self initWithSundayAsFirst:YES];
-}
-- (id) initWithSundayAsFirst:(BOOL)s{
-	
-	if (!(self = [super initWithFrame:CGRectZero])) return nil;
-	
+- (void)__initializeComponentWithSundayAsFirst:(BOOL)s
+{
 	sunday = s;
 	
 	
@@ -629,7 +623,7 @@
 	
 	[currentTile setTarget:self action:@selector(tile:)];
 	CGRect r = CGRectMake(0, 0, self.tileBox.bounds.size.width, self.tileBox.bounds.size.height + self.tileBox.frame.origin.y);
-
+	
 	
 	self.frame = r;
 	
@@ -690,8 +684,8 @@
 	NSString *sat = [dateFormat stringFromDate:[NSDate dateFromDateInformation:sund timeZone:tz]];
 	
 	[dateFormat release];
-
-
+	
+	
 	
 	NSArray *ar;
 	if(sunday) ar = [NSArray arrayWithObjects:sun,mon,tue,wed,thu,fri,sat,nil];
@@ -709,10 +703,32 @@
 		label.font = [UIFont systemFontOfSize:11];
 		label.backgroundColor = [UIColor clearColor];
 		label.textColor = [UIColor colorWithRed:59/255. green:73/255. blue:88/255. alpha:1];
-
+		
 		i++;
 		[label release];
 	}
+}
+
+- (id) init{
+	return [self initWithSundayAsFirst:YES];
+}
+
+/* AN [26 Jan 2011]: Added */
+- (id)initWithCoder:(NSCoder *)aDecoder
+{
+	if (self = [super initWithCoder:aDecoder])
+	{
+		[self __initializeComponentWithSundayAsFirst:NO];
+	}
+	
+	return self;
+}
+
+- (id) initWithSundayAsFirst:(BOOL)s{
+	
+	if (!(self = [super initWithFrame:CGRectZero])) return nil;
+	
+	[self __initializeComponentWithSundayAsFirst:s];
 	
 	return self;
 }
