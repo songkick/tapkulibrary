@@ -126,11 +126,12 @@
 #define dotFontSize 18.0
 #define dateFontSize 22.0
 
-@interface TKCalendarMonthTiles (private)
+@interface TKCalendarMonthTiles (/* Private */)
 
 @property (readonly) UIImageView *selectedImageView;
 @property (readonly) UILabel *currentDay;
 @property (readonly) UILabel *dot;
+
 @end
 
 @implementation TKCalendarMonthTiles
@@ -294,10 +295,10 @@
 	
 	
 	r.size.height -= 2;
-	[str drawInRect: r
-		   withFont: f1
-	  lineBreakMode: UILineBreakModeWordWrap 
-		  alignment: UITextAlignmentCenter];
+	//[str drawInRect: r
+//		   withFont: f1
+//	  lineBreakMode: UILineBreakModeWordWrap 
+//		  alignment: UITextAlignmentCenter];
 	
 	if(mark){
 		r.size.height = 10;
@@ -344,6 +345,7 @@
 		}
 	}
 	
+	/* Drawing current month unselected days. */
 	
 	color = [UIColor colorWithRed:59/255. green:73/255. blue:88/255. alpha:1];
 	[color set];
@@ -360,6 +362,8 @@
 		index++;
 	}
 	
+	/* Drawing next number days. */
+	
 	[[UIColor grayColor] set];
 	int i = 1;
 	while(index % 7 != 0){
@@ -371,8 +375,6 @@
 		i++;
 		index++;
 	}
-	
-	
 }
 
 - (void) selectDay:(int)day{
@@ -544,18 +546,18 @@
 }
 
 - (UILabel *) currentDay{
-	if(currentDay==nil){
-		CGRect r = self.selectedImageView.bounds;
-		r.origin.y -= 2;
-		currentDay = [[UILabel alloc] initWithFrame:r];
-		currentDay.text = @"1";
-		currentDay.textColor = [UIColor whiteColor];
-		currentDay.backgroundColor = [UIColor clearColor];
-		currentDay.font = [UIFont boldSystemFontOfSize:dateFontSize];
-		currentDay.textAlignment = UITextAlignmentCenter;
-		currentDay.shadowColor = [UIColor darkGrayColor];
-		currentDay.shadowOffset = CGSizeMake(0, -1);
-	}
+	//if(currentDay==nil){
+//		CGRect r = self.selectedImageView.bounds;
+//		r.origin.y -= 2;
+//		currentDay = [[UILabel alloc] initWithFrame:r];
+//		currentDay.text = @"1";
+//		currentDay.textColor = [UIColor whiteColor];
+//		currentDay.backgroundColor = [UIColor clearColor];
+//		currentDay.font = [UIFont boldSystemFontOfSize:dateFontSize];
+//		currentDay.textAlignment = UITextAlignmentCenter;
+//		currentDay.shadowColor = [UIColor darkGrayColor];
+//		currentDay.shadowOffset = CGSizeMake(0, -1);
+//	}
 	return currentDay;
 }
 - (UILabel *) dot{
@@ -927,15 +929,13 @@
 	
 }
 
-
-
-
 - (UIImageView *) topBackground{
 	if(topBackground==nil){
 		topBackground = [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:TKBUNDLE(@"TapkuLibrary.bundle/Images/calendar/Month Grid Top Bar.png")]];
 	}
 	return topBackground;
 }
+
 - (UILabel *) monthYear{
 	if(monthYear==nil){
 		monthYear = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.tileBox.frame.size.width, 34)];
@@ -947,6 +947,7 @@
 	}
 	return monthYear;
 }
+
 - (UIButton *) leftArrow{
 	if(leftArrow==nil){
 		leftArrow = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
@@ -962,6 +963,7 @@
 	}
 	return leftArrow;
 }
+
 - (UIButton *) rightArrow{
 	if(rightArrow==nil){
 		rightArrow = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
@@ -976,18 +978,19 @@
 	}
 	return rightArrow;
 }
+
 - (UIScrollView *) tileBox{
 	if(tileBox==nil){
 		tileBox = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 44, 320, currentTile.frame.size.height)];
 	}
 	return tileBox;
 }
+
 - (UIImageView *) shadow{
 	if(shadow==nil){
 		shadow = [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:TKBUNDLE(@"TapkuLibrary.bundle/Images/calendar/Month Calendar Shadow.png")]];
 	}
 	return shadow;
 }
-
 
 @end

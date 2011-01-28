@@ -28,11 +28,11 @@
  OTHER DEALINGS IN THE SOFTWARE.
  
  */
+
 #import <UIKit/UIKit.h>
 
 @class TKCalendarMonthTiles;
 @protocol TKCalendarMonthViewDelegate, TKCalendarMonthViewDataSource;
-
 
 @interface TKCalendarMonthView : UIView {
 
@@ -45,7 +45,6 @@
 
 	id <TKCalendarMonthViewDelegate> delegate;
 	id <TKCalendarMonthViewDataSource> dataSource;
-
 }
 
 @property (nonatomic,assign) id <TKCalendarMonthViewDelegate> delegate;
@@ -61,10 +60,10 @@
 
 @end
 
-
 @protocol TKCalendarMonthViewDelegate <NSObject>
 
 @optional
+
 - (void) calendarMonthView:(TKCalendarMonthView*)monthView didSelectDate:(NSDate*)d;
 - (void) calendarMonthView:(TKCalendarMonthView*)monthView monthDidChange:(NSDate*)d;
 
