@@ -690,7 +690,7 @@
 		label.shadowOffset = CGSizeMake(0, 1);
 		label.font = [UIFont systemFontOfSize:11];
 		label.backgroundColor = [UIColor clearColor];
-		label.textColor = [UIColor colorWithRed:59/255. green:73/255. blue:88/255. alpha:1];
+		label.textColor = [UIColor colorWithRed:84/255. green:84/255. blue:84/255. alpha:1];
 		
 		i++;
 		[label release];
@@ -938,12 +938,12 @@
 }
 - (UILabel *) monthYear{
 	if(monthYear==nil){
-		monthYear = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.tileBox.frame.size.width, 38)];
+		monthYear = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.tileBox.frame.size.width, 34)];
 		
 		monthYear.textAlignment = UITextAlignmentCenter;
 		monthYear.backgroundColor = [UIColor clearColor];
 		monthYear.font = [UIFont boldSystemFontOfSize:22];
-		monthYear.textColor = [UIColor colorWithRed:59/255. green:73/255. blue:88/255. alpha:1];
+		monthYear.textColor = [UIColor colorWithRed:56/255. green:56/255. blue:56/255. alpha:1];
 	}
 	return monthYear;
 }
@@ -958,7 +958,7 @@
 
 		[leftArrow setImage:[UIImage imageNamedTK:@"TapkuLibrary.bundle/Images/calendar/Month Calendar Left Arrow"] forState:0];
 		
-		leftArrow.frame = CGRectMake(0, 0, 48, 38);
+		leftArrow.frame = CGRectMake(0, 0, 48, 34);
 	}
 	return leftArrow;
 }
@@ -967,7 +967,7 @@
 		rightArrow = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
 		rightArrow.tag = 1;
 		[rightArrow addTarget:self action:@selector(changeMonth:) forControlEvents:UIControlEventTouchUpInside];
-		rightArrow.frame = CGRectMake(320-45, 0, 48, 38);
+		rightArrow.frame = CGRectMake(320-45, 0, 48, 34);
 		
 
 
