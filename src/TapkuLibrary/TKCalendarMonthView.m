@@ -144,7 +144,7 @@ static UIColor *_previousMonthTextColor;
 {
 	if (!_previousMonthTextColor)
 	{
-		_previousMonthTextColor = [UIColor grayColor];
+		_previousMonthTextColor = [[UIColor colorWithRed:169 / 255. green:169 / 255. blue:169 / 255. alpha:1] retain];
 	}
 	
 	return _previousMonthTextColor;
@@ -156,7 +156,7 @@ static UIColor *_currentMonthTextColor;
 {
 	if (!_currentMonthTextColor)
 	{
-		_currentMonthTextColor = [[UIColor colorWithRed:59 / 255. green:73 / 255. blue:88 / 255. alpha:1] retain];
+		_currentMonthTextColor = [[UIColor colorWithRed:99 / 255. green:99 / 255. blue:99 / 255. alpha:1] retain];
 	}
 	
 	return _currentMonthTextColor;
@@ -180,7 +180,7 @@ static UIColor *_nextMonthTextColor;
 {
 	if (!_nextMonthTextColor)
 	{
-		_nextMonthTextColor = [UIColor grayColor];
+		_nextMonthTextColor = [[UIColor colorWithRed:169 / 255. green:169 / 255. blue:169 / 255. alpha:1] retain];
 	}
 	
 	return _nextMonthTextColor;
