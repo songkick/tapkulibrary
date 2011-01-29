@@ -29,9 +29,8 @@
  
  */
 
-#import <UIKit/UIKit.h>
-
 @class TKCalendarMonthTiles;
+
 @protocol TKCalendarMonthViewDelegate, TKCalendarMonthViewDataSource;
 
 @interface TKCalendarMonthView : UIView {
@@ -53,10 +52,10 @@
 - (id)initWithFrame:(CGRect)frame sundayAsFirst:(BOOL)yesOrNo;
 - (id)initWithSundayAsFirst:(BOOL)sunday; // or Monday
 
-- (NSDate*) dateSelected;
-- (NSDate*) monthDate;
-- (void) selectDate:(NSDate*)date;
-- (void) reload;
+- (NSDate*)dateSelected;
+- (NSDate*)monthDate;
+- (void)selectDate:(NSDate*)date;
+- (void)reload;
 
 @end
 
