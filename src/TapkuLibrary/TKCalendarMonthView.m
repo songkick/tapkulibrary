@@ -840,7 +840,7 @@ static UIColor *_currentDayShadowColor;
 	
 	if ([marks count] > 0)
 	{
-		if([[marks objectAtIndex: row * 7 + column] boolValue])
+		if ([[marks objectAtIndex: row * 7 + column] boolValue])
 		{
 			[self.selectedImageView addSubview:self.dot];
 		}
