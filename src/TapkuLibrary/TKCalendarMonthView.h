@@ -33,8 +33,8 @@
 
 @protocol TKCalendarMonthViewDelegate, TKCalendarMonthViewDataSource;
 
-@interface TKCalendarMonthView : UIView {
-
+@interface TKCalendarMonthView : UIView
+{
 	TKCalendarMonthTiles *currentTile,*oldTile;
 	UIButton *leftArrow, *rightArrow;
 	UIImageView *topBackground, *shadow;
@@ -52,9 +52,9 @@
 - (id)initWithFrame:(CGRect)frame sundayAsFirst:(BOOL)yesOrNo;
 - (id)initWithSundayAsFirst:(BOOL)sunday; // or Monday
 
-- (NSDate*)dateSelected;
-- (NSDate*)monthDate;
-- (void)selectDate:(NSDate*)date;
+- (NSDate *)dateSelected;
+- (NSDate *)monthDate;
+- (void)selectDate:(NSDate *)date;
 - (void)reload;
 
 @end
@@ -63,13 +63,14 @@
 
 @optional
 
-- (void) calendarMonthView:(TKCalendarMonthView*)monthView didSelectDate:(NSDate*)d;
-- (void) calendarMonthView:(TKCalendarMonthView*)monthView monthDidChange:(NSDate*)d;
+- (void)calendarMonthView:(TKCalendarMonthView *)monthView didSelectDate:(NSDate *)d;
+- (void)calendarMonthView:(TKCalendarMonthView *)monthView monthDidChange:(NSDate *)d;
 
 @end
 
 @protocol TKCalendarMonthViewDataSource <NSObject>
 
-- (NSArray*) calendarMonthView:(TKCalendarMonthView*)monthView marksFromDate:(NSDate*)startDate toDate:(NSDate*)lastDate;
+- (NSArray*) calendarMonthView:(TKCalendarMonthView*)monthView marksFromDate:(NSDate*)startDate
+						toDate:(NSDate*)lastDate;
 
 @end

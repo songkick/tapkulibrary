@@ -51,7 +51,7 @@
 - (NSDate *)firstOfMonth
 {
 	TKDateInformation info = [self dateInformationWithTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
-
+	
 	info.day = 1;
 	info.minute = 0;
 	info.second = 0;
@@ -122,7 +122,7 @@ static UIColor *_dayShadowColor;
 	{
 		_dayShadowColor = [[UIColor colorWithRed:238 / 255. green:237 / 255. blue:239 / 255. alpha:1] retain];
 	}
-
+	
 	return _dayShadowColor;
 }
 
@@ -296,7 +296,7 @@ static UIColor *_currentDayShadowColor;
 	info.day = daysInMonth;
 	NSDate *lastInMonth = [NSDate dateFromDateInformation:info timeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
 	TKDateInformation lastDateInfo = [lastInMonth dateInformationWithTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
-
+	
 	if (lastDateInfo.weekday < 7 && sunday)
 	{
 		lastDateInfo.day = 7 - lastDateInfo.weekday;
@@ -320,7 +320,7 @@ static UIColor *_currentDayShadowColor;
 		{
 			lastDateInfo.month = 1; lastDateInfo.year++;
 		}
-
+		
 		lastDate = [NSDate dateFromDateInformation:lastDateInfo timeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
 	}
 	else
@@ -337,7 +337,7 @@ static UIColor *_currentDayShadowColor;
 	{
 		return nil;
 	}
-
+	
 	firstOfPrev = -1;
 	marks = [markArray retain];
 	monthDate = [date retain];
@@ -361,7 +361,7 @@ static UIColor *_currentDayShadowColor;
 	{
 		row--;
 	}
-
+	
 	row = (row / 7) + ((row % 7 == 0) ? 0:1);
 	float h = 44 * row;
 	
@@ -386,7 +386,7 @@ static UIColor *_currentDayShadowColor;
 		}
 		
 		lastOfPrev = preDayCnt;
-
+		
 	}
 	
 	self.frame = CGRectMake(0, 1, 320, h + 1);
@@ -639,7 +639,7 @@ static UIColor *_currentDayShadowColor;
 	/* Drawing current month unselected days. */
 	
 	color = [TKCalendarColorScheme currentMonthTextColor];
-
+	
 	for (int i = 1; i <= daysInMonth; i++)
 	{
 		r = [self rectForCellAtIndex:index];
@@ -660,7 +660,7 @@ static UIColor *_currentDayShadowColor;
 		{
 			[self drawTileInRect:r day:i mark:NO font:font font2:font2 textColor:textColor today:today == i];
 		}
-
+		
 		index++;
 	}
 	
@@ -1206,38 +1206,32 @@ static UIColor *_currentDayShadowColor;
 	return [currentTile monthDate];
 }
 
+/*!
+ @updated 4 Feb 2011 by Aleks Nesterow-Rutkowski
+ Fixed: When initialized from IB, "short months" had odd gray stripe at the bottom.
+ */
 - (void)selectDate:(NSDate*)date
 {
 	TKDateInformation info = [date dateInformation];
 	
 	NSDate *month = [date firstOfMonth];
 	
-	if ([month isEqualToDate:[currentTile monthDate]])
-	{
-		[currentTile selectDay:info.day];
-		return;
-	}
-	else
-	{
-		
-		//NSDate *month = [self firstOfMonthFromDate:date];
-		NSArray *dates = [TKCalendarMonthTiles rangeOfDatesInMonthGrid:month startOnSunday:sunday];
-		NSArray *data = [dataSource calendarMonthView:self marksFromDate:[dates objectAtIndex:0] toDate:[dates lastObject]];
-		TKCalendarMonthTiles *newTile = [[TKCalendarMonthTiles alloc] initWithMonth:month 
-																			  marks:data 
-																   startDayOnSunday:sunday];
-		[newTile setTarget:self action:@selector(tile:)];
-		[currentTile removeFromSuperview];
-		[currentTile release];
-		currentTile = newTile;
-		[self.tileBox addSubview:currentTile];
-		self.tileBox.frame = CGRectMake(0, 44, newTile.frame.size.width, newTile.frame.size.height);
-		self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, self.bounds.size.width, self.tileBox.frame.size.height+self.tileBox.frame.origin.y);
-
-		self.shadow.frame = CGRectMake(0, self.frame.size.height-self.shadow.frame.size.height+21, self.shadow.frame.size.width, self.shadow.frame.size.height);
-		self.monthYear.text = [NSString stringWithFormat:@"%@ %@",[month month],[month year]];
-		[currentTile selectDay:info.day];
-	}
+	NSArray *dates = [TKCalendarMonthTiles rangeOfDatesInMonthGrid:month startOnSunday:sunday];
+	NSArray *data = [dataSource calendarMonthView:self marksFromDate:[dates objectAtIndex:0] toDate:[dates lastObject]];
+	TKCalendarMonthTiles *newTile = [[TKCalendarMonthTiles alloc] initWithMonth:month 
+																		  marks:data 
+															   startDayOnSunday:sunday];
+	[newTile setTarget:self action:@selector(tile:)];
+	[currentTile removeFromSuperview];
+	[currentTile release];
+	currentTile = newTile;
+	[self.tileBox addSubview:currentTile];
+	self.tileBox.frame = CGRectMake(0, 44, newTile.frame.size.width, newTile.frame.size.height);
+	self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, self.bounds.size.width, self.tileBox.frame.size.height+self.tileBox.frame.origin.y);
+	
+	self.shadow.frame = CGRectMake(0, self.frame.size.height-self.shadow.frame.size.height+21, self.shadow.frame.size.width, self.shadow.frame.size.height);
+	self.monthYear.text = [NSString stringWithFormat:@"%@ %@",[month month],[month year]];
+	[currentTile selectDay:info.day];
 }
 
 - (void)reload
@@ -1272,7 +1266,7 @@ static UIColor *_currentDayShadowColor;
 		
 		int day = [[ar objectAtIndex:0] intValue];
 		//[currentTile selectDay:day];
-	
+		
 		// thanks rafael
 		TKDateInformation info = [[currentTile monthDate] dateInformation];
 		info.day = day;
@@ -1318,7 +1312,7 @@ static UIColor *_currentDayShadowColor;
 		leftArrow = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
 		leftArrow.tag = 0;
 		[leftArrow addTarget:self action:@selector(changeMonth:) forControlEvents:UIControlEventTouchUpInside];
-
+		
 		[leftArrow setImage:[UIImage imageNamedTK:@"TapkuLibrary.bundle/Images/calendar/Month Calendar Left Arrow"] forState:0];
 		
 		leftArrow.frame = CGRectMake(0, 0, 48, 34);
