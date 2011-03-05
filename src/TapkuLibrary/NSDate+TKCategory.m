@@ -80,6 +80,12 @@
 	[gregorian release];
 	return info;
 }
+
+/*!
+ @updated 4 Mar 2011
+ Commented out setTimeZone: method on NSDateComponents instance, since that method is not supported
+ on iOS versions earlier than 4.0. 
+ */
 + (NSDate*) dateFromDateInformation:(TKDateInformation)info timeZone:(NSTimeZone*)tz{
 	
 	NSCalendar *gregorian = [[[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar] autorelease];
@@ -92,10 +98,17 @@
 	[comp setHour:info.hour];
 	[comp setMinute:info.minute];
 	[comp setSecond:info.second];
-	[comp setTimeZone:tz];
+	/* [comp setTimeZone:tz]; */
 	
 	return [gregorian dateFromComponents:comp];
 }
+
+/*!
+ @updated 4 Mar 2011
+ Commented out setTimeZone: method on NSDateComponents instance, since that method is not supported
+ on iOS versions earlier than 4.0.
+ 
+ */
 + (NSDate*) dateFromDateInformation:(TKDateInformation)info{
 	
 	NSCalendar *gregorian = [[[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar] autorelease];
@@ -107,7 +120,7 @@
 	[comp setHour:info.hour];
 	[comp setMinute:info.minute];
 	[comp setSecond:info.second];
-	//[comp setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
+	/* [comp setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]]; */
 	
 	return [gregorian dateFromComponents:comp];
 }
