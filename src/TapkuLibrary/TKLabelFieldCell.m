@@ -31,24 +31,26 @@
 
 #import "TKLabelFieldCell.h"
 
-
 @implementation TKLabelFieldCell
 @synthesize field;
 
-
-
-- (id)initWithFrame:(CGRect)frame reuseIdentifier:(NSString *)reuseIdentifier {
-    if (self = [super initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier]) {
+- (id)initWithFrame:(CGRect)frame reuseIdentifier:(NSString *)reuseIdentifier
+{
+    self = [super initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier];
+    
+    if (self)
+    {
         // Initialization code
 		field = [[UILabel alloc] initWithFrame:CGRectZero];
 		[self addSubview:field];
 		field.font = [UIFont boldSystemFontOfSize:16.0];
     }
+    
     return self;
 }
 
-
-- (void)layoutSubviews {
+- (void)layoutSubviews
+{
     [super layoutSubviews];
 	
 	CGRect r = CGRectInset(self.bounds, 16, 8);

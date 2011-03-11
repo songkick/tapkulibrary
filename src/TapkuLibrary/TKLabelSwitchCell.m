@@ -35,15 +35,19 @@
 @implementation TKLabelSwitchCell
 @synthesize switcher;
 
-- (id)initWithFrame:(CGRect)frame reuseIdentifier:(NSString *)reuseIdentifier {
-    if (self = [super initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier]) {
+- (id)initWithFrame:(CGRect)frame reuseIdentifier:(NSString *)reuseIdentifier
+{
+    self = [super initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier];
+    
+    if (self)
+    {
         // Initialization code
 		switcher = [[UISwitch alloc] initWithFrame:CGRectZero];
 		[self addSubview:switcher];
     }
+    
     return self;
 }
-
 
 - (void)layoutSubviews {
     [super layoutSubviews];

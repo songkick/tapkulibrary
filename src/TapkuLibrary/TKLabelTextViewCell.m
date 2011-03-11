@@ -37,7 +37,10 @@
 @synthesize textView;
 
 - (id) initWithFrame:(CGRect)frame reuseIdentifier:(NSString *)reuseIdentifier {
-    if (self = [super initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier]) {
+    
+    self = [super initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier];
+    
+    if (self) {
         // Initialization code
 		
 		textView = [[UITextView alloc] initWithFrame:CGRectZero];

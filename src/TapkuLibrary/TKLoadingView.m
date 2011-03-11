@@ -44,9 +44,12 @@
 @implementation TKLoadingView
 @synthesize radius;
 
-- (id) initWithTitle:(NSString*)ttl message:(NSString*)msg{
-	if(self = [super initWithFrame:CGRectMake(0, 0, 280, 200)]){
-		
+- (id) initWithTitle:(NSString*)ttl message:(NSString*)msg
+{
+    self = [super initWithFrame:CGRectMake(0, 0, 280, 200)];
+    
+	if (self)
+    {
 		_title = [ttl copy];
 		_message = [msg copy];
 		_activity = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];

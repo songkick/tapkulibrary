@@ -33,7 +33,6 @@
 #import "UIImage+TKCategory.h"
 #import "TKGlobal.h"
 
-
 @interface TKCoverflowCoverView (private)
 
 @property (retain,nonatomic,readonly) UIImageView *imageView;
@@ -42,13 +41,16 @@
 
 @end
 
-
 @implementation TKCoverflowCoverView
+
 @synthesize image,baseline;
 
-
-- (id) initWithFrame:(CGRect)frame {
-    if (self = [super initWithFrame:frame]) {
+- (id)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    
+    if (self)
+    {
 		self.opaque = NO;
 		self.backgroundColor = [UIColor clearColor];
 		
@@ -62,12 +64,9 @@
     return self;
 }
 
-
-
-- (void) drawRect:(CGRect)rect {
+- (void)drawRect:(CGRect)rect
+{
 	
-
-
 }
 
 - (void) setImage:(UIImage *)img{
@@ -126,6 +125,5 @@
 	[image release];
     [super dealloc];
 }
-
 
 @end

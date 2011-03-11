@@ -36,8 +36,12 @@
 
 @synthesize label;
 
-- (id) initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
-    if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
+- (id) initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+{
+    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+    
+    if (self)
+    {
         // Initialization code
 		label = [[UILabel alloc] initWithFrame:CGRectZero];
 		label.textAlignment = UITextAlignmentRight;
@@ -50,6 +54,7 @@
 		//label.backgroundColor = [UIColor redColor];
 		label.numberOfLines = 20;
     }
+    
     return self;
 }
 

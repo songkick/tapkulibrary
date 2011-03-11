@@ -47,21 +47,31 @@
 
 // The designated initializer. Override to perform setup that is required before the view is loaded.
 // Only when xibless (interface buildder)
-- (id)initWithFrame:(CGRect)frame {
-    if (self = [super initWithFrame:frame]) {
+- (id)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    
+    if (self)
+    {
         // Custom initialization
 		[self setupCustomInitialisation];
     }
+    
     return self;
 }
 
 // The designated initializer. Override to perform setup that is required before the view is loaded.
 // Only when using xib (interface buildder)
-- (id)initWithCoder:(NSCoder *)decoder {
-	if (self = [super initWithCoder:decoder]) {
+- (id)initWithCoder:(NSCoder *)decoder
+{
+    self = [super initWithCoder:decoder];
+    
+	if (self)
+    {
 		// Custom initialization
 		[self setupCustomInitialisation];
 	}
+    
 	return self;
 }
 
@@ -146,9 +156,9 @@
 	CGSize titleSize = CGSizeZero;
 	
 	CGRect locationRect = CGRectMake(self.bounds.origin.x + HORIZONTAL_OFFSET, 
-								  self.bounds.origin.y + VERTICAL_OFFSET, 
-								  self.bounds.size.width - 2 * HORIZONTAL_OFFSET, 
-								  availableHeight);
+                                     self.bounds.origin.y + VERTICAL_OFFSET, 
+                                     self.bounds.size.width - 2 * HORIZONTAL_OFFSET, 
+                                     availableHeight);
 	
     // Drawing code
 	// Draw both title and location
@@ -164,9 +174,9 @@
 			locationRect.size.height -= titleSize.height;
 			UILineBreakMode breaking = (locationRect.size.height < FONT_SIZE + VERTICAL_OFFSET ? UILineBreakModeTailTruncation : UILineBreakModeWordWrap);
 			[self.location drawInRect:CGRectIntegral(locationRect) 
-						  withFont:[UIFont systemFontOfSize:FONT_SIZE] 
-					 lineBreakMode:breaking
-						 alignment:UITextAlignmentLeft];
+                             withFont:[UIFont systemFontOfSize:FONT_SIZE] 
+                        lineBreakMode:breaking
+                            alignment:UITextAlignmentLeft];
 			
 		}
 	}		

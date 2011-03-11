@@ -38,7 +38,9 @@
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
 	
-	if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
+    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+    
+	if (self) {
         // Initialization code
 		field = [[UITextField alloc] initWithFrame:CGRectZero];
 		field.autocorrectionType = UITextAutocorrectionTypeYes;
@@ -53,8 +55,12 @@
 	
 }
 
-- (id)initWithFrame:(CGRect)frame reuseIdentifier:(NSString *)reuseIdentifier {
-    if (self = [super initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier]) {
+- (id)initWithFrame:(CGRect)frame reuseIdentifier:(NSString *)reuseIdentifier
+{
+    self = [super initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier];
+    
+    if (self)
+    {
         // Initialization code
 		field = [[UITextField alloc] initWithFrame:CGRectZero];
 		field.autocorrectionType = UITextAutocorrectionTypeYes;
@@ -67,7 +73,8 @@
     return self;
 }
 
-- (void)layoutSubviews {
+- (void)layoutSubviews
+{
     [super layoutSubviews];
 	
 	CGRect r = CGRectInset(self.bounds, 16, 8);

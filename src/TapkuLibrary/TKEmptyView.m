@@ -49,10 +49,12 @@
 
 
 
-- (id) initWithFrame:(CGRect)frame mask:(UIImage*)image title:(NSString*)titleString subtitle:(NSString*)subtitleString{
-	if(self = [super initWithFrame:frame]){
-		
-		
+- (id) initWithFrame:(CGRect)frame mask:(UIImage*)image title:(NSString*)titleString subtitle:(NSString*)subtitleString
+{
+    self = [super initWithFrame:frame];
+    
+	if (self)
+    {
 		self.backgroundColor = [UIColor whiteColor];
 		
 		titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
@@ -82,14 +84,12 @@
 		[self addSubview:imageView];
 		[self addSubview:subtitleLabel];
 		[self addSubview:titleLabel];
-		
-
-		
 	}
+    
 	return self;
 	
 }
-- (id) initWithFrame:(CGRect)frame emptyViewImage:(TKEmptyViewImage)image title:(NSString*)titleString subtitle:(NSString*)subtitleString{
+- (id)initWithFrame:(CGRect)frame emptyViewImage:(TKEmptyViewImage)image title:(NSString*)titleString subtitle:(NSString *)subtitleString{
 	return [self initWithFrame:frame mask:[self predefinedImage:image] title:titleString subtitle:subtitleString];
 }
 - (id) initWithFrame:(CGRect)frame {

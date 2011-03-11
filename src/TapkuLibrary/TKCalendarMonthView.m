@@ -1063,7 +1063,9 @@ static UIColor *_currentDayShadowColor;
 
 - (id)initWithSundayAsFirst:(BOOL)yesOrNo
 {	
-	if (self = [super init])
+    self = [super init];
+    
+	if (self)
 	{
 		[self __initializeComponentWithSundayAsFirst:yesOrNo];
 	}
@@ -1080,7 +1082,9 @@ static UIColor *_currentDayShadowColor;
 /* AN [27 Jan 2011]: Added */
 - (id)initWithFrame:(CGRect)frame sundayAsFirst:(BOOL)yesOrNo
 {
-	if (self = [super initWithFrame:frame])
+    self = [super initWithFrame:frame];
+    
+	if (self)
 	{
 		[self __initializeComponentWithSundayAsFirst:yesOrNo];
 	}
@@ -1091,7 +1095,9 @@ static UIColor *_currentDayShadowColor;
 /* AN [26 Jan 2011]: Added */
 - (id)initWithCoder:(NSCoder *)aDecoder
 {
-	if (self = [super initWithCoder:aDecoder])
+    self = [super initWithCoder:aDecoder];
+    
+	if (self)
 	{
 		[self __initializeComponentWithSundayAsFirst:NO];
 	}

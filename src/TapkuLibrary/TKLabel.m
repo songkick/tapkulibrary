@@ -22,7 +22,9 @@
 
 - (id)init
 {
-	if (self = [super init])
+    self = [super init];
+	
+    if (self)
 	{
 		[self __initializeComponent];
 	}
@@ -32,7 +34,9 @@
 
 - (id)initWithCoder:(NSCoder *)aDecoder
 {
-	if (self = [super initWithCoder:aDecoder])
+    self = [super initWithCoder:aDecoder];
+    
+	if (self)
 	{
 		[self __initializeComponent];
 	}
@@ -42,7 +46,9 @@
 
 - (id)initWithFrame:(CGRect)frame
 {
-	if (self = [super initWithFrame:frame])
+    self = [super initWithFrame:frame];
+	
+    if (self)
 	{
 		[self __initializeComponent];
 	}
