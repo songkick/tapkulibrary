@@ -1,5 +1,5 @@
 //
-//  DoubleShadowLabel.m
+//  TKLabel.m
 //  BeierholmContacts
 //
 //  Created by Aleks Nesterow on 11/29/10.

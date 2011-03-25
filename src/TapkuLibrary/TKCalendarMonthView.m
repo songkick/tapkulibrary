@@ -132,7 +132,8 @@ static UIColor *_todayShadowColor;
 {
 	if (!_todayShadowColor)
 	{
-		_todayShadowColor = [[UIColor colorWithRed:132 / 255. green:1 / 255. blue:37 / 255. alpha:1] retain];
+//		_todayShadowColor = [[UIColor colorWithRed:132 / 255. green:1 / 255. blue:37 / 255. alpha:1] retain];
+		_todayShadowColor = [[UIColor colorWithRed:73 / 255. green:72 / 255. blue:73 / 255. alpha:1] retain];
 	}
 	
 	return _todayShadowColor;
@@ -482,96 +483,110 @@ static UIColor *_currentDayShadowColor;
 	
 	CGFloat textY = (height - fontSize.height) / 2.;
 	
-	CGImageRef mask = [self createMaskWithSize:rect.size shape:^{
-		[[UIColor blackColor] setFill];
-		CGContextFillRect(UIGraphicsGetCurrentContext(), /* rect */ CGRectMake(0, 0, CGRectGetWidth(rect), CGRectGetHeight(rect)));
-		[[UIColor whiteColor] setFill];
-		
-		/* Custom shape goes here. */
-		
-		[string drawAtPoint:CGPointMake(textX, textY) withFont:font];
-		[string drawAtPoint:CGPointMake(textX, textY - 1) withFont:font];
-	}];
-	
-	CGImageRef cutoutRef = CGImageCreateWithMask([self blackSquareOfSize:rect.size].CGImage, mask);
-	CGImageRelease(mask);
-	
-	UIImage *cutout;
-	
-	if ([UIImage respondsToSelector:@selector(imageWithCGImage:scale:orientation:)])
-	{
-		cutout = [UIImage imageWithCGImage:cutoutRef scale:[[UIScreen mainScreen] scale]
-							   orientation:UIImageOrientationUp];
-	}
-	else
-	{
-		cutout = [UIImage imageWithCGImage:cutoutRef];
-	}
-	
-	CGImageRelease(cutoutRef);  
-	
-	CGImageRef shadedMask = [self createMaskWithSize:rect.size shape:^{
-		[[UIColor whiteColor] setFill];
-		CGContextFillRect(UIGraphicsGetCurrentContext(), /* rect */ CGRectMake(0, 0, CGRectGetWidth(rect), CGRectGetHeight(rect)));
-		CGContextSetShadowWithColor(UIGraphicsGetCurrentContext(), CGSizeMake(0, 1), 1.0f
-									, [[UIColor colorWithWhite:0.0 alpha:0.5] CGColor]);
-		[cutout drawAtPoint:CGPointMake(0, 0)];
-	}];
-	
-	/* Create negative image. */
-	if (UIGraphicsBeginImageContextWithOptions != NULL)
-	{
-		UIGraphicsBeginImageContextWithOptions(rect.size, NO, 0);
-	}
-	else
-	{
-		UIGraphicsBeginImageContext(rect.size);
-	}
-	
-	[[UIColor blackColor] setFill];
-	/* Custom shape goes here. */
-	[string drawAtPoint:CGPointMake(textX, textY - 1) withFont:font];
-	UIImage *negative = UIGraphicsGetImageFromCurrentImageContext();
-	UIGraphicsEndImageContext(); 
-	
-	CGImageRef innerShadowRef = CGImageCreateWithMask(negative.CGImage, shadedMask);
-	CGImageRelease(shadedMask);
-	
-	UIImage *innerShadow;
-	
-	if ([UIImage respondsToSelector:@selector(imageWithCGImage:scale:orientation:)])
-	{
-		innerShadow = [UIImage imageWithCGImage:innerShadowRef scale:[[UIScreen mainScreen] scale]
-									orientation:UIImageOrientationUp];
-	}
-	else
-	{
-		innerShadow = [UIImage imageWithCGImage:innerShadowRef];
-	}
-	
-	CGImageRelease(innerShadowRef);
-	
-	/* Draw actual image. */
-	
-	textX += CGRectGetMinX(rect);
-	textY += CGRectGetMinY(rect);
-	
 	if (yesOrNo)
 	{
+		textX += CGRectGetMinX(rect);
+		textY += CGRectGetMinY(rect);
+		
 		[[TKCalendarColorScheme todayShadowColor] setFill];
-		[string drawAtPoint:CGPointMake(textX, textY - 2) withFont:font];
+		[string drawAtPoint:CGPointMake(textX, textY - 1) withFont:font];
+		
+		[textColor setFill];
+		[string drawAtPoint:CGPointMake(textX, textY) withFont:font]; 
 	}
 	else
 	{
-		[[TKCalendarColorScheme dayShadowColor] setFill];
-		[string drawAtPoint:CGPointMake(textX, textY) withFont:font];
+		CGImageRef mask = [self createMaskWithSize:rect.size shape:^{
+			[[UIColor blackColor] setFill];
+			CGContextFillRect(UIGraphicsGetCurrentContext(), /* rect */ CGRectMake(0, 0, CGRectGetWidth(rect), CGRectGetHeight(rect)));
+			[[UIColor whiteColor] setFill];
+			
+			/* Custom shape goes here. */
+			
+			[string drawAtPoint:CGPointMake(textX, textY) withFont:font];
+			[string drawAtPoint:CGPointMake(textX, textY - 1) withFont:font];
+		}];
+		
+		CGImageRef cutoutRef = CGImageCreateWithMask([self blackSquareOfSize:rect.size].CGImage, mask);
+		CGImageRelease(mask);
+		
+		UIImage *cutout;
+		
+		if ([UIImage respondsToSelector:@selector(imageWithCGImage:scale:orientation:)])
+		{
+			cutout = [UIImage imageWithCGImage:cutoutRef scale:[[UIScreen mainScreen] scale]
+								   orientation:UIImageOrientationUp];
+		}
+		else
+		{
+			cutout = [UIImage imageWithCGImage:cutoutRef];
+		}
+		
+		CGImageRelease(cutoutRef);  
+		
+		CGImageRef shadedMask = [self createMaskWithSize:rect.size shape:^{
+			[[UIColor whiteColor] setFill];
+			CGContextFillRect(UIGraphicsGetCurrentContext(), /* rect */ CGRectMake(0, 0, CGRectGetWidth(rect), CGRectGetHeight(rect)));
+			CGContextSetShadowWithColor(UIGraphicsGetCurrentContext(), CGSizeMake(0, 1), 1.0f
+										, [[UIColor colorWithWhite:0.0 alpha:0.5] CGColor]);
+			[cutout drawAtPoint:CGPointMake(0, 0)];
+		}];
+		
+		/* Create negative image. */
+		if (UIGraphicsBeginImageContextWithOptions != NULL)
+		{
+			UIGraphicsBeginImageContextWithOptions(rect.size, NO, 0);
+		}
+		else
+		{
+			UIGraphicsBeginImageContext(rect.size);
+		}
+		
+		[[UIColor blackColor] setFill];
+		/* Custom shape goes here. */
+		[string drawAtPoint:CGPointMake(textX, textY - 1) withFont:font];
+		UIImage *negative = UIGraphicsGetImageFromCurrentImageContext();
+		UIGraphicsEndImageContext(); 
+		
+		CGImageRef innerShadowRef = CGImageCreateWithMask(negative.CGImage, shadedMask);
+		CGImageRelease(shadedMask);
+		
+		UIImage *innerShadow;
+		
+		if ([UIImage respondsToSelector:@selector(imageWithCGImage:scale:orientation:)])
+		{
+			innerShadow = [UIImage imageWithCGImage:innerShadowRef scale:[[UIScreen mainScreen] scale]
+										orientation:UIImageOrientationUp];
+		}
+		else
+		{
+			innerShadow = [UIImage imageWithCGImage:innerShadowRef];
+		}
+		
+		CGImageRelease(innerShadowRef);
+		
+		/* Draw actual image. */
+		
+		textX += CGRectGetMinX(rect);
+		textY += CGRectGetMinY(rect);
+		
+//		if (yesOrNo)
+//		{
+//			[[TKCalendarColorScheme todayShadowColor] setFill];
+//			[string drawAtPoint:CGPointMake(textX, textY - 2) withFont:font];
+//		}
+//		else
+//		{
+			[[TKCalendarColorScheme dayShadowColor] setFill];
+			[string drawAtPoint:CGPointMake(textX, textY) withFont:font];
+//		}
+		
+		[textColor setFill];
+		[string drawAtPoint:CGPointMake(textX, textY - 1) withFont:font]; 
+		
+		/* Finally apply shadow. */
+		[innerShadow drawAtPoint:CGPointMake(CGRectGetMinX(rect), CGRectGetMinY(rect))];
 	}
-	
-	[textColor setFill];
-	[string drawAtPoint:CGPointMake(textX, textY - 1) withFont:font]; 
-	
-	/* Finally apply shadow. */
-	[innerShadow drawAtPoint:CGPointMake(CGRectGetMinX(rect), CGRectGetMinY(rect))];
 }
 
 - (void)drawTileInRect:(CGRect)r day:(int)day mark:(BOOL)mark font:(UIFont*)f1 font2:(UIFont*)f2
@@ -899,7 +914,7 @@ static UIColor *_currentDayShadowColor;
 	{
 		CGRect r = self.selectedImageView.bounds;
 		r.origin.y += 1;
-		currentDay = [[TKLabel alloc] initWithFrame:r];
+		currentDay = [[UILabel alloc] initWithFrame:r];
 		currentDay.text = @"1";
 		currentDay.textColor = [UIColor whiteColor];
 		currentDay.backgroundColor = [UIColor clearColor];
