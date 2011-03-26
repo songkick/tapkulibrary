@@ -339,6 +339,8 @@ static UIColor *_currentDayShadowColor;
 		return nil;
 	}
 	
+	self.backgroundColor = [UIColor clearColor];
+	
 	firstOfPrev = -1;
 	marks = [markArray retain];
 	monthDate = [date retain];
@@ -410,7 +412,7 @@ static UIColor *_currentDayShadowColor;
 	int row = index / 7;
 	int col = index % 7;
 	
-	return CGRectMake(col*46, row*44, 47, 45);
+	return CGRectMake(col * 46 - 1, row * 44, 47, 45);
 }
 
 - (UIImage*)blackSquareOfSize:(CGSize)size
@@ -610,7 +612,7 @@ static UIColor *_currentDayShadowColor;
 {	
 	CGContextRef context = UIGraphicsGetCurrentContext();
 	UIImage *tile = [UIImage imageWithContentsOfFile:TKBUNDLE(@"TapkuLibrary.bundle/Images/calendar/Month Calendar Date Tile.png")];
-	CGRect r = CGRectMake(0, 0, 46, 44);
+	CGRect r = CGRectMake(-1, 0, 46, 44);
 	CGContextDrawTiledImage(context, r, tile.CGImage);
 	
 	if (today > 0)
@@ -758,7 +760,7 @@ static UIColor *_currentDayShadowColor;
 	
 	CGRect r = self.selectedImageView.frame;
 	
-	r.origin.x = (column * 46);
+	r.origin.x = (column * 46) - 1;
 	r.origin.y = (row * 44) - 1;
 	
 	self.selectedImageView.frame = r;
@@ -870,7 +872,7 @@ static UIColor *_currentDayShadowColor;
 	}
 	
 	CGRect r = self.selectedImageView.frame;
-	r.origin.x = (column * 46);
+	r.origin.x = (column * 46) - 1;
 	r.origin.y = (row * 44) - 1;
 	self.selectedImageView.frame = r;
 	
@@ -1010,7 +1012,7 @@ static UIColor *_currentDayShadowColor;
 	self.shadow.frame = CGRectMake(0, self.frame.size.height - self.shadow.frame.size.height + 21
 								   , self.shadow.frame.size.width, self.shadow.frame.size.height);
 	
-	self.backgroundColor = [UIColor grayColor];
+//	self.backgroundColor = [UIColor grayColor];
 	
 	NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
 	[dateFormat setDateFormat:@"eee"];
