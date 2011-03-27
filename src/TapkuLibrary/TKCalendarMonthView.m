@@ -988,6 +988,11 @@ static UIColor *_currentDayShadowColor;
 
 @synthesize delegate, dataSource;
 
+- (void)significantTimeChange:(NSNotification *)notification
+{
+	[self reload];
+}
+
 - (void)__initializeComponentWithSundayAsFirst:(BOOL)s
 {
 	sunday = s;
@@ -1009,10 +1014,10 @@ static UIColor *_currentDayShadowColor;
 	[self addSubview:self.rightArrow];
 	
 	[self addSubview:self.shadow];
-	self.shadow.frame = CGRectMake(0, self.frame.size.height - self.shadow.frame.size.height + 21
+	self.shadow.frame = CGRectMake(0, self.frame.size.height
 								   , self.shadow.frame.size.width, self.shadow.frame.size.height);
 	
-//	self.backgroundColor = [UIColor grayColor];
+	self.backgroundColor = [UIColor grayColor];
 	
 	NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
 	[dateFormat setDateFormat:@"eee"];
@@ -1071,6 +1076,9 @@ static UIColor *_currentDayShadowColor;
 		i++;
 		[label release];
 	}
+	
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(significantTimeChange:)
+												 name:UIApplicationSignificantTimeChangeNotification object:nil];
 }
 
 - (id)init
@@ -1122,8 +1130,11 @@ static UIColor *_currentDayShadowColor;
 	return self;
 }
 
-- (void) dealloc
+- (void)dealloc
 {
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationSignificantTimeChangeNotification
+												  object:nil];
+	
 	[shadow release];
 	[topBackground release];
 	[leftArrow release];
@@ -1182,7 +1193,7 @@ static UIColor *_currentDayShadowColor;
 		self.tileBox.frame = CGRectMake(self.tileBox.frame.origin.x, self.tileBox.frame.origin.y, self.tileBox.frame.size.width, newTile.frame.size.height);
 		self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, self.bounds.size.width, self.tileBox.frame.size.height+self.tileBox.frame.origin.y);
 		
-		self.shadow.frame = CGRectMake(0, self.frame.size.height-self.shadow.frame.size.height+21, self.shadow.frame.size.width, self.shadow.frame.size.height);
+		self.shadow.frame = CGRectMake(0, self.frame.size.height, self.shadow.frame.size.width, self.shadow.frame.size.height);
 	}
 	else
 	{
@@ -1191,7 +1202,7 @@ static UIColor *_currentDayShadowColor;
 		self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, self.bounds.size.width, self.tileBox.frame.size.height+self.tileBox.frame.origin.y);
 		currentTile.frame = CGRectMake(0,  newTile.frame.size.height - overlap, currentTile.frame.size.width, currentTile.frame.size.height);
 		
-		self.shadow.frame = CGRectMake(0, self.frame.size.height-self.shadow.frame.size.height+21, self.shadow.frame.size.width, self.shadow.frame.size.height);
+		self.shadow.frame = CGRectMake(0, self.frame.size.height, self.shadow.frame.size.width, self.shadow.frame.size.height);
 	}
 	
 	[UIView commitAnimations];
@@ -1252,7 +1263,7 @@ static UIColor *_currentDayShadowColor;
 	self.tileBox.frame = CGRectMake(0, 44, newTile.frame.size.width, newTile.frame.size.height);
 	self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, self.bounds.size.width, self.tileBox.frame.size.height+self.tileBox.frame.origin.y);
 	
-	self.shadow.frame = CGRectMake(0, self.frame.size.height-self.shadow.frame.size.height+21, self.shadow.frame.size.width, self.shadow.frame.size.height);
+	self.shadow.frame = CGRectMake(0, self.frame.size.height, self.shadow.frame.size.width, self.shadow.frame.size.height);
 	self.monthYear.text = [NSString stringWithFormat:@"%@ %@",[month month],[month year]];
 	[currentTile selectDay:info.day];
 }
@@ -1372,7 +1383,8 @@ static UIColor *_currentDayShadowColor;
 {
 	if (!shadow)
 	{
-		shadow = [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:TKBUNDLE(@"TapkuLibrary.bundle/Images/calendar/Month Calendar Shadow.png")]];
+		UIImage *shadowImage = [UIImage imageWithContentsOfFile:TKBUNDLE(@"TapkuLibrary.bundle/Images/calendar/Month Calendar Shadow.png")];
+		shadow = [[UIImageView alloc] initWithImage:shadowImage];
 	}
 	
 	return shadow;
