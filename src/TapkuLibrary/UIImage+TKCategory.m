@@ -43,8 +43,14 @@
 	}
 	
 	NSString *path = [NSString stringWithFormat:@"%@%@.png",str,s > 1 ? @"@2x":@""];
-	return [UIImage imageWithCGImage:[UIImage imageWithContentsOfFile:TKBUNDLE(path)].CGImage scale:s orientation:UIImageOrientationUp];
-
+	UIImage *image;
+	if ([UIImage respondsToSelector:@selector(imageWithCGImage:scale:orientation:)])
+	{
+		image = [UIImage imageWithCGImage:[UIImage imageWithContentsOfFile:TKBUNDLE(path)].CGImage scale:s orientation:UIImageOrientationUp];
+	} else {
+		image = [UIImage imageWithCGImage:[UIImage imageWithContentsOfFile:TKBUNDLE(path)].CGImage];
+	}
+	return image;
 }
 
 - (UIImage *) imageCroppedToRect:(CGRect)rect{
