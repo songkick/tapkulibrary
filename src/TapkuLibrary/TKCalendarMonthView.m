@@ -109,6 +109,8 @@
 + (UIColor *)todayTextColor;
 + (UIColor *)nextMonthTextColor;
 + (UIColor *)currentDayShadowColor;
++ (UIColor *)previousMonthDisabledTextColor;
++ (UIColor *)currentMonthDisabledTextColor;
 
 @end
 
@@ -132,7 +134,7 @@ static UIColor *_todayShadowColor;
 {
 	if (!_todayShadowColor)
 	{
-//		_todayShadowColor = [[UIColor colorWithRed:132 / 255. green:1 / 255. blue:37 / 255. alpha:1] retain];
+		//		_todayShadowColor = [[UIColor colorWithRed:132 / 255. green:1 / 255. blue:37 / 255. alpha:1] retain];
 		_todayShadowColor = [[UIColor colorWithRed:73 / 255. green:72 / 255. blue:73 / 255. alpha:1] retain];
 	}
 	
@@ -197,6 +199,30 @@ static UIColor *_currentDayShadowColor;
 	}
 	
 	return _currentDayShadowColor;
+}
+
+static UIColor *_PreviousMonthDisabledTextColor;
+
++ (UIColor *)previousMonthDisabledTextColor
+{
+	if (!_PreviousMonthDisabledTextColor)
+	{
+		_PreviousMonthDisabledTextColor = [UIColor blueColor];
+	}
+	
+	return _PreviousMonthDisabledTextColor;
+}
+
+static UIColor *_CurrentMonthDisabledTextColor;
+
++ (UIColor *)currentMonthDisabledTextColor
+{
+	if (!_CurrentMonthDisabledTextColor)
+	{
+		_CurrentMonthDisabledTextColor = [UIColor redColor];
+	}
+	
+	return _CurrentMonthDisabledTextColor;
 }
 
 @end
@@ -277,7 +303,7 @@ static UIColor *_currentDayShadowColor;
 		TKDateInformation info2 = [previousMonth dateInformationWithTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
 		int preDayCnt = [previousMonth daysBetweenDate:currentMonth];
 		
-		if(info.weekday==1)
+		if (info.weekday==1)
 		{
 			info2.day = preDayCnt - 5;
 		}
@@ -317,7 +343,7 @@ static UIColor *_currentDayShadowColor;
 		lastDateInfo.day = 8 - lastDateInfo.weekday;
 		lastDateInfo.month++;
 		
-		if (lastDateInfo.month>12)
+		if (lastDateInfo.month > 12)
 		{
 			lastDateInfo.month = 1; lastDateInfo.year++;
 		}
@@ -332,7 +358,7 @@ static UIColor *_currentDayShadowColor;
 	return [NSArray arrayWithObjects:firstDate,lastDate,nil];
 }
 
-- (id) initWithMonth:(NSDate*)date marks:(NSArray*)markArray startDayOnSunday:(BOOL)sunday
+- (id)initWithMonth:(NSDate*)date marks:(NSArray*)markArray startDayOnSunday:(BOOL)sunday
 {
 	if (![super initWithFrame:CGRectZero])
 	{
@@ -573,16 +599,16 @@ static UIColor *_currentDayShadowColor;
 		textX += CGRectGetMinX(rect);
 		textY += CGRectGetMinY(rect);
 		
-//		if (yesOrNo)
-//		{
-//			[[TKCalendarColorScheme todayShadowColor] setFill];
-//			[string drawAtPoint:CGPointMake(textX, textY - 2) withFont:font];
-//		}
-//		else
-//		{
-			[[TKCalendarColorScheme dayShadowColor] setFill];
-			[string drawAtPoint:CGPointMake(textX, textY) withFont:font];
-//		}
+		//		if (yesOrNo)
+		//		{
+		//			[[TKCalendarColorScheme todayShadowColor] setFill];
+		//			[string drawAtPoint:CGPointMake(textX, textY - 2) withFont:font];
+		//		}
+		//		else
+		//		{
+		[[TKCalendarColorScheme dayShadowColor] setFill];
+		[string drawAtPoint:CGPointMake(textX, textY) withFont:font];
+		//		}
 		
 		[textColor setFill];
 		[string drawAtPoint:CGPointMake(textX, textY - 1) withFont:font]; 
@@ -620,7 +646,7 @@ static UIColor *_currentDayShadowColor;
 	{
 		int pre = firstOfPrev > 0 ? lastOfPrev - firstOfPrev + 1 : 0;
 		int index = today + pre-1;
-		CGRect r =[self rectForCellAtIndex:index];
+		CGRect r = [self rectForCellAtIndex:index];
 		r.origin.y -= 1;
 		[[UIImage imageWithContentsOfFile:TKBUNDLE(@"TapkuLibrary.bundle/Images/calendar/Month Calendar Today Tile.png")] drawInRect:r];
 	}
@@ -634,9 +660,21 @@ static UIColor *_currentDayShadowColor;
 	
 	UIColor *color = [TKCalendarColorScheme previousMonthTextColor];
 	
+	/* AN: If appropriate, previous month days should be drawn as disabled. */
+	NSDate *previousMonthDate = [monthDate previousMonth];
+	NSDate *firstDayOfTodayMonth = [[NSDate date] firstOfMonth];
+	
+	NSTimeInterval previousMonthInterval = [previousMonthDate timeIntervalSince1970];
+	NSTimeInterval thisMonthInterval = [firstDayOfTodayMonth timeIntervalSince1970];
+	
+	if (previousMonthInterval < thisMonthInterval)
+	{
+		color = [TKCalendarColorScheme previousMonthDisabledTextColor];
+	}
+	
 	if (firstOfPrev > 0)
 	{
-		for (int i = firstOfPrev; i<= lastOfPrev;i++)
+		for (int i = firstOfPrev; i <= lastOfPrev; i++)
 		{
 			r = [self rectForCellAtIndex:index];
 			
@@ -667,6 +705,11 @@ static UIColor *_currentDayShadowColor;
 		if (today == i)
 		{
 			textColor = [UIColor whiteColor];
+		}
+		
+		if (i < today)
+		{
+			textColor = [TKCalendarColorScheme currentMonthDisabledTextColor];
 		}
 		
 		if ([marks count] > 0)
@@ -833,12 +876,39 @@ static UIColor *_currentDayShadowColor;
 		day = day - daysInMonth;
 	}
 	
+	// AN: Pre-analyze of portion and day.
+	
+	if (1 == portion)
+	{
+		/* AN: We ignore switching to the day that is older than today. */
+		if (day < today)
+		{
+			return;
+		}
+	}
+	else if (0 == portion)
+	{
+		/* AN: We ignore switching to the previous month if it's older than today's month. */
+		NSDate *previousMonthDate = [monthDate previousMonth];
+		NSDate *firstDayOfTodayMonth = [[NSDate date] firstOfMonth];
+			
+		NSTimeInterval previousMonthInterval = [previousMonthDate timeIntervalSince1970];
+		NSTimeInterval thisMonthInterval = [firstDayOfTodayMonth timeIntervalSince1970];
+			
+		if (previousMonthInterval < thisMonthInterval)
+		{
+			return;
+		}
+	}
+	
+	////////////////////////////////////////////////////
+	
 	if (portion != 1)
 	{
 		self.selectedImageView.image = [UIImage imageWithContentsOfFile:TKBUNDLE(@"TapkuLibrary.bundle/Images/calendar/Month Calendar Date Tile Gray.png")];
 		markWasOnToday = YES;
 	}
-	else if (portion==1 && day == today)
+	else if (portion == 1 && day == today)
 	{
 		self.currentDay.shadowOffset = CGSizeMake(0, -1);
 		self.dot.shadowOffset = CGSizeMake(0, 1);
@@ -855,6 +925,8 @@ static UIColor *_currentDayShadowColor;
 	
 	[self addSubview:self.selectedImageView];
 	self.currentDay.text = [NSString stringWithFormat:@"%d",day];
+	
+	/* AN: Analyze portions */
 	
 	if ([marks count] > 0)
 	{
@@ -877,7 +949,7 @@ static UIColor *_currentDayShadowColor;
 	r.origin.y = (row * 44) - 1;
 	self.selectedImageView.frame = r;
 	
-	if(day == selectedDay && selectedPortion == portion) 
+	if (day == selectedDay && selectedPortion == portion) 
 	{
 		return;
 	}
@@ -891,7 +963,7 @@ static UIColor *_currentDayShadowColor;
 	else if (down)
 	{
 		[target performSelector:action withObject:[NSArray arrayWithObjects:[NSNumber numberWithInt:day]
-												   , [NSNumber numberWithInt:portion],nil]];
+												   , [NSNumber numberWithInt:portion], nil]];
 		selectedDay = day;
 		selectedPortion = portion;
 	}
