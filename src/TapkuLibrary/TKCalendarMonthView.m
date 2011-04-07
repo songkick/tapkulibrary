@@ -247,7 +247,7 @@ static UIColor *_currentDayShadowColor;
 @implementation TKCalendarMonthTiles
 @synthesize monthDate;
 
-+ (NSArray *)rangeOfDatesInMonthGrid:(NSDate*)date startOnSunday:(BOOL)sunday
++ (NSArray *)rangeOfDatesInMonthGrid:(NSDate *)date startOnSunday:(BOOL)sunday
 {	
 	NSDate *firstDate, *lastDate;
 	
@@ -500,7 +500,8 @@ static UIColor *_currentDayShadowColor;
 	{
 		CGImageRef mask = [self createMaskWithSize:rect.size shape:^{
 			[[UIColor blackColor] setFill];
-			CGContextFillRect(UIGraphicsGetCurrentContext(), /* rect */ CGRectMake(0, 0, CGRectGetWidth(rect), CGRectGetHeight(rect)));
+			CGContextFillRect(UIGraphicsGetCurrentContext(), /* rect */ CGRectMake(0, 0, CGRectGetWidth(rect)
+																				   , CGRectGetHeight(rect)));
 			[[UIColor whiteColor] setFill];
 			
 			/* Custom shape goes here. */
@@ -889,7 +890,8 @@ static UIColor *_currentDayShadowColor;
 	}
 	else if (down)
 	{
-		[target performSelector:action withObject:[NSArray arrayWithObjects:[NSNumber numberWithInt:day],[NSNumber numberWithInt:portion],nil]];
+		[target performSelector:action withObject:[NSArray arrayWithObjects:[NSNumber numberWithInt:day]
+												   , [NSNumber numberWithInt:portion],nil]];
 		selectedDay = day;
 		selectedPortion = portion;
 	}
@@ -982,6 +984,8 @@ static UIColor *_currentDayShadowColor;
 @property (readonly) UIButton *rightArrow;
 @property (readonly) UIImageView *shadow;
 
+- (void)updateArrowStatus;
+
 @end
 
 @implementation TKCalendarMonthView
@@ -1014,8 +1018,8 @@ static UIColor *_currentDayShadowColor;
 	[self addSubview:self.rightArrow];
 	
 	[self addSubview:self.shadow];
-	self.shadow.frame = CGRectMake(0, self.frame.size.height
-								   , self.shadow.frame.size.width, self.shadow.frame.size.height);
+	self.shadow.frame = CGRectMake(0, self.frame.size.height, self.shadow.frame.size.width
+								   , self.shadow.frame.size.height);
 	
 	self.backgroundColor = [UIColor grayColor];
 	
@@ -1056,7 +1060,7 @@ static UIColor *_currentDayShadowColor;
 	[dateFormat release];
 	
 	NSArray *ar;
-	if(sunday) ar = [NSArray arrayWithObjects:sun, mon, tue, wed, thu, fri, sat, nil];
+	if (sunday) ar = [NSArray arrayWithObjects:sun, mon, tue, wed, thu, fri, sat, nil];
 	else ar = [NSArray arrayWithObjects:mon, tue, wed, thu, fri, sat, sun, nil];
 	
 	int i = 0;
@@ -1076,6 +1080,8 @@ static UIColor *_currentDayShadowColor;
 		i++;
 		[label release];
 	}
+	
+	[self updateArrowStatus];
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(significantTimeChange:)
 												 name:UIApplicationSignificantTimeChangeNotification object:nil];
@@ -1146,7 +1152,7 @@ static UIColor *_currentDayShadowColor;
     [super dealloc];
 }
 
-- (void)changeMonthAnimation:(UIView*)sender
+- (void)changeMonthAnimation:(UIView *)sender
 {	
 	BOOL isNext = (sender.tag == 1);
 	NSDate *nextMonth = isNext ? [currentTile.monthDate nextMonth] : [currentTile.monthDate previousMonth];
@@ -1156,7 +1162,8 @@ static UIColor *_currentDayShadowColor;
 	
 	NSArray *dates = [TKCalendarMonthTiles rangeOfDatesInMonthGrid:nextMonth startOnSunday:sunday];
 	NSArray *ar = [dataSource calendarMonthView:self marksFromDate:[dates objectAtIndex:0] toDate:[dates lastObject]];
-	TKCalendarMonthTiles *newTile = [[TKCalendarMonthTiles alloc] initWithMonth:nextMonth marks:ar startDayOnSunday:sunday];
+	TKCalendarMonthTiles *newTile = [[TKCalendarMonthTiles alloc] initWithMonth:nextMonth marks:ar
+															   startDayOnSunday:sunday];
 	[newTile setTarget:self action:@selector(tile:)];
 	
 	int overlap =  0;
@@ -1188,21 +1195,29 @@ static UIColor *_currentDayShadowColor;
 	
 	if (isNext)
 	{
-		currentTile.frame = CGRectMake(0, -1 * currentTile.bounds.size.height + overlap, currentTile.frame.size.width, currentTile.frame.size.height);
+		currentTile.frame = CGRectMake(0, -1 * currentTile.bounds.size.height + overlap, currentTile.frame.size.width
+									   , currentTile.frame.size.height);
 		newTile.frame = CGRectMake(0, 1, newTile.frame.size.width, newTile.frame.size.height);
-		self.tileBox.frame = CGRectMake(self.tileBox.frame.origin.x, self.tileBox.frame.origin.y, self.tileBox.frame.size.width, newTile.frame.size.height);
-		self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, self.bounds.size.width, self.tileBox.frame.size.height+self.tileBox.frame.origin.y);
+		self.tileBox.frame = CGRectMake(self.tileBox.frame.origin.x, self.tileBox.frame.origin.y
+										, self.tileBox.frame.size.width, newTile.frame.size.height);
+		self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, self.bounds.size.width
+								, self.tileBox.frame.size.height+self.tileBox.frame.origin.y);
 		
-		self.shadow.frame = CGRectMake(0, self.frame.size.height, self.shadow.frame.size.width, self.shadow.frame.size.height);
+		self.shadow.frame = CGRectMake(0, self.frame.size.height, self.shadow.frame.size.width
+									   , self.shadow.frame.size.height);
 	}
 	else
 	{
 		newTile.frame = CGRectMake(0, 1, newTile.frame.size.width, newTile.frame.size.height);
-		self.tileBox.frame = CGRectMake(self.tileBox.frame.origin.x, self.tileBox.frame.origin.y, self.tileBox.frame.size.width, newTile.frame.size.height);
-		self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, self.bounds.size.width, self.tileBox.frame.size.height+self.tileBox.frame.origin.y);
-		currentTile.frame = CGRectMake(0,  newTile.frame.size.height - overlap, currentTile.frame.size.width, currentTile.frame.size.height);
+		self.tileBox.frame = CGRectMake(self.tileBox.frame.origin.x, self.tileBox.frame.origin.y
+										, self.tileBox.frame.size.width, newTile.frame.size.height);
+		self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, self.bounds.size.width
+								, self.tileBox.frame.size.height + self.tileBox.frame.origin.y);
+		currentTile.frame = CGRectMake(0,  newTile.frame.size.height - overlap, currentTile.frame.size.width
+									   , currentTile.frame.size.height);
 		
-		self.shadow.frame = CGRectMake(0, self.frame.size.height, self.shadow.frame.size.width, self.shadow.frame.size.height);
+		self.shadow.frame = CGRectMake(0, self.frame.size.height, self.shadow.frame.size.width
+									   , self.shadow.frame.size.height);
 	}
 	
 	[UIView commitAnimations];
@@ -1211,6 +1226,8 @@ static UIColor *_currentDayShadowColor;
 	currentTile = newTile;
 	
 	monthYear.text = [NSString stringWithFormat:@"%@ %@", [localNextMonth month], [localNextMonth year]];
+	
+	[self updateArrowStatus];
 }
 
 - (void)changeMonth:(UIButton *)sender
@@ -1252,8 +1269,7 @@ static UIColor *_currentDayShadowColor;
 	
 	NSArray *dates = [TKCalendarMonthTiles rangeOfDatesInMonthGrid:month startOnSunday:sunday];
 	NSArray *data = [dataSource calendarMonthView:self marksFromDate:[dates objectAtIndex:0] toDate:[dates lastObject]];
-	TKCalendarMonthTiles *newTile = [[TKCalendarMonthTiles alloc] initWithMonth:month 
-																		  marks:data 
+	TKCalendarMonthTiles *newTile = [[TKCalendarMonthTiles alloc] initWithMonth:month marks:data
 															   startDayOnSunday:sunday];
 	[newTile setTarget:self action:@selector(tile:)];
 	[currentTile removeFromSuperview];
@@ -1261,11 +1277,28 @@ static UIColor *_currentDayShadowColor;
 	currentTile = newTile;
 	[self.tileBox addSubview:currentTile];
 	self.tileBox.frame = CGRectMake(0, 44, newTile.frame.size.width, newTile.frame.size.height);
-	self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, self.bounds.size.width, self.tileBox.frame.size.height+self.tileBox.frame.origin.y);
+	self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, self.bounds.size.width
+							, self.tileBox.frame.size.height + self.tileBox.frame.origin.y);
 	
-	self.shadow.frame = CGRectMake(0, self.frame.size.height, self.shadow.frame.size.width, self.shadow.frame.size.height);
+	self.shadow.frame = CGRectMake(0, self.frame.size.height, self.shadow.frame.size.width
+								   , self.shadow.frame.size.height);
 	self.monthYear.text = [NSString stringWithFormat:@"%@ %@",[month month],[month year]];
 	[currentTile selectDay:info.day];
+}
+
+/*!
+ We should disable left arrow when the previous month is older than today's month.
+ */
+- (void)updateArrowStatus
+{
+	NSDate *currentMonthDate = [currentTile monthDate];
+	NSDate *previousMonthDate = [currentMonthDate previousMonth];
+	NSDate *todayMonth = [[NSDate date] firstOfMonth];
+	
+	NSTimeInterval previousMonthInterval = [previousMonthDate timeIntervalSince1970];
+	NSTimeInterval todayMonthInterval = [todayMonth timeIntervalSince1970];
+	
+	[[self leftArrow] setEnabled:previousMonthInterval >= todayMonthInterval];
 }
 
 - (void)reload
@@ -1273,13 +1306,16 @@ static UIColor *_currentDayShadowColor;
 	NSArray *dates = [TKCalendarMonthTiles rangeOfDatesInMonthGrid:[currentTile monthDate] startOnSunday:sunday];
 	NSArray *ar = [dataSource calendarMonthView:self marksFromDate:[dates objectAtIndex:0] toDate:[dates lastObject]];
 	
-	TKCalendarMonthTiles *refresh = [[[TKCalendarMonthTiles alloc] initWithMonth:[currentTile monthDate] marks:ar startDayOnSunday:sunday] autorelease];
+	TKCalendarMonthTiles *refresh = [[[TKCalendarMonthTiles alloc] initWithMonth:[currentTile monthDate] marks:ar
+																startDayOnSunday:sunday] autorelease];
 	[refresh setTarget:self action:@selector(tile:)];
 	
 	[self.tileBox addSubview:refresh];
 	[currentTile removeFromSuperview];
 	[currentTile release];
 	currentTile = [refresh retain];
+	
+	[self updateArrowStatus];
 }
 
 - (void)tile:(NSArray *)ar
@@ -1345,10 +1381,10 @@ static UIColor *_currentDayShadowColor;
 	{
 		leftArrow = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
 		leftArrow.tag = 0;
+		[leftArrow setAdjustsImageWhenDisabled:YES];
 		[leftArrow addTarget:self action:@selector(changeMonth:) forControlEvents:UIControlEventTouchUpInside];
-		
-		[leftArrow setImage:[UIImage imageNamedTK:@"TapkuLibrary.bundle/Images/calendar/Month Calendar Left Arrow"] forState:0];
-		
+		[leftArrow setImage:[UIImage imageNamedTK:@"TapkuLibrary.bundle/Images/calendar/Month Calendar Left Arrow"]
+				   forState:0];
 		leftArrow.frame = CGRectMake(0, 0, 48, 34);
 	}
 	
@@ -1361,9 +1397,11 @@ static UIColor *_currentDayShadowColor;
 	{
 		rightArrow = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
 		rightArrow.tag = 1;
+		[rightArrow setAdjustsImageWhenDisabled:YES];
 		[rightArrow addTarget:self action:@selector(changeMonth:) forControlEvents:UIControlEventTouchUpInside];
 		rightArrow.frame = CGRectMake(320 - 45, 0, 48, 34);
-		[rightArrow setImage:[UIImage imageNamedTK:@"TapkuLibrary.bundle/Images/calendar/Month Calendar Right Arrow"] forState:0];
+		[rightArrow setImage:[UIImage imageNamedTK:@"TapkuLibrary.bundle/Images/calendar/Month Calendar Right Arrow"]
+					forState:0];
 	}
 	
 	return rightArrow;
