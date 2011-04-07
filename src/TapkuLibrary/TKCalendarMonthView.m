@@ -183,7 +183,8 @@ static UIColor *_nextMonthTextColor;
 {
 	if (!_nextMonthTextColor)
 	{
-		_nextMonthTextColor = [[UIColor colorWithRed:169 / 255. green:169 / 255. blue:169 / 255. alpha:1] retain];
+		//_nextMonthTextColor = [[UIColor colorWithRed:169 / 255. green:169 / 255. blue:169 / 255. alpha:1] retain];
+		_nextMonthTextColor = [[UIColor colorWithRed:99 / 255. green:99 / 255. blue:99 / 255. alpha:1] retain];
 	}
 	
 	return _nextMonthTextColor;
@@ -207,22 +208,23 @@ static UIColor *_PreviousMonthDisabledTextColor;
 {
 	if (!_PreviousMonthDisabledTextColor)
 	{
-		_PreviousMonthDisabledTextColor = [UIColor blueColor];
+		_PreviousMonthDisabledTextColor = [[UIColor colorWithRed:169 / 255. green:169 / 255. blue:169 / 255. alpha:1] retain];
 	}
 	
 	return _PreviousMonthDisabledTextColor;
 }
 
-static UIColor *_CurrentMonthDisabledTextColor;
+//static UIColor *_CurrentMonthDisabledTextColor;
 
 + (UIColor *)currentMonthDisabledTextColor
 {
-	if (!_CurrentMonthDisabledTextColor)
-	{
-		_CurrentMonthDisabledTextColor = [UIColor redColor];
-	}
-	
-	return _CurrentMonthDisabledTextColor;
+//	if (!_CurrentMonthDisabledTextColor)
+//	{
+//		_CurrentMonthDisabledTextColor = [UIColor redColor];
+//	}
+//	
+//	return _CurrentMonthDisabledTextColor;
+	return [self previousMonthDisabledTextColor];
 }
 
 @end
